@@ -1,11 +1,448 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My First Website</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MangaHub - Read Manga Online</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* Search Bar */
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 25px;
+            padding: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+
+        .search-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: #5a67d8;
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Categories */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Manga Grid */
+        .manga-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .manga-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .manga-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .manga-cover {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .manga-info {
+            padding: 1rem;
+        }
+
+        .manga-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .manga-genre {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .manga-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: #ffd700;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .search-container {
+                margin: 1rem auto;
+            }
+            
+            .manga-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+            
+            .categories {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .manga-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .feature-highlight {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: white;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My Website!</h1>
-    <p>This is my first website built with GitHub!</p>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo"><i class="fas fa-book-open"></i> MangaHub</a>
+                <ul class="nav-links">
+                    <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#"><i class="fas fa-fire"></i> Popular</a></li>
+                    <li><a href="#"><i class="fas fa-star"></i> Latest</a></li>
+                    <li><a href="#"><i class="fas fa-bookmark"></i> My List</a></li>
+                    <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Search Section -->
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search for your favorite manga..." id="searchInput">
+            <button class="search-btn" onclick="searchManga()">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+
+        <div class="feature-highlight">
+            <h3><i class="fas fa-magic"></i> User-Friendly Features</h3>
+            <p>Easy search • Clean design • Mobile-friendly • Fast loading • Bookmarking system</p>
+        </div>
+
+        <main>
+            <!-- Categories -->
+            <section>
+                <h2 class="section-title">Browse by Genre</h2>
+                <div class="categories">
+                    <div class="category-card" onclick="filterByGenre('action')">
+                        <div class="category-icon"><i class="fas fa-fist-raised"></i></div>
+                        <h3>Action</h3>
+                    </div>
+                    <div class="category-card" onclick="filterByGenre('romance')">
+                        <div class="category-icon"><i class="fas fa-heart"></i></div>
+                        <h3>Romance</h3>
+                    </div>
+                    <div class="category-card" onclick="filterByGenre('fantasy')">
+                        <div class="category-icon"><i class="fas fa-magic"></i></div>
+                        <h3>Fantasy</h3>
+                    </div>
+                    <div class="category-card" onclick="filterByGenre('horror')">
+                        <div class="category-icon"><i class="fas fa-ghost"></i></div>
+                        <h3>Horror</h3>
+                    </div>
+                    <div class="category-card" onclick="filterByGenre('comedy')">
+                        <div class="category-icon"><i class="fas fa-laugh"></i></div>
+                        <h3>Comedy</h3>
+                    </div>
+                    <div class="category-card" onclick="filterByGenre('drama')">
+                        <div class="category-icon"><i class="fas fa-theater-masks"></i></div>
+                        <h3>Drama</h3>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Popular Manga -->
+            <section>
+                <h2 class="section-title">Popular Manga</h2>
+                <div class="manga-grid" id="mangaGrid">
+                    <!-- Sample manga cards -->
+                    <div class="manga-card" onclick="openManga('sample1')">
+                        <div class="manga-cover">
+                            <i class="fas fa-image fa-3x"></i>
+                        </div>
+                        <div class="manga-info">
+                            <div class="manga-title">Adventure Quest</div>
+                            <div class="manga-genre">Action, Adventure</div>
+                            <div class="manga-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span>4.2</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manga-card" onclick="openManga('sample2')">
+                        <div class="manga-cover">
+                            <i class="fas fa-image fa-3x"></i>
+                        </div>
+                        <div class="manga-info">
+                            <div class="manga-title">Love Story</div>
+                            <div class="manga-genre">Romance, Drama</div>
+                            <div class="manga-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span>4.8</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manga-card" onclick="openManga('sample3')">
+                        <div class="manga-cover">
+                            <i class="fas fa-image fa-3x"></i>
+                        </div>
+                        <div class="manga-info">
+                            <div class="manga-title">Magic Academy</div>
+                            <div class="manga-genre">Fantasy, School</div>
+                            <div class="manga-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span>4.5</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manga-card" onclick="openManga('sample4')">
+                        <div class="manga-cover">
+                            <i class="fas fa-image fa-3x"></i>
+                        </div>
+                        <div class="manga-info">
+                            <div class="manga-title">Dark Shadows</div>
+                            <div class="manga-genre">Horror, Mystery</div>
+                            <div class="manga-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span>4.3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 MangaHub. Built with ❤️ for manga lovers.</p>
+            <p>User-friendly design • Fast loading • Mobile optimized</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sample functionality
+        function searchManga() {
+            const searchTerm = document.getElementById('searchInput').value;
+            if (searchTerm.trim()) {
+                alert(`Searching for: "${searchTerm}"\n\nThis is where you'd implement actual search functionality!`);
+            } else {
+                alert('Please enter a search term!');
+            }
+        }
+
+        function filterByGenre(genre) {
+            alert(`Filtering by genre: ${genre}\n\nThis would show all ${genre} manga!`);
+        }
+
+        function openManga(mangaId) {
+            alert(`Opening manga: ${mangaId}\n\nThis would take you to the manga reading page!`);
+        }
+
+        // Enter key search
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchManga();
+            }
+        });
+
+        // Add some interactive hover effects
+        document.querySelectorAll('.manga-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
 </body>
 </html>
